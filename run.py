@@ -4,10 +4,12 @@ import pymongo
 app = Flask(__name__)
 
 # connect DB
-# try:
-
-# except:
-
+try:
+    mongo = pymongo.MongoClient(host="localhost", port=27017, serverSelectionTimeoutMS = 1000)
+    # trigger exception if cannot connect to db, serverSelectionTimeoutMS-time to timout if error=true
+    mongo.server_info()
+except:
+    print("ERROR-Cannot connect to db")
 
 
 
