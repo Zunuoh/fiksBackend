@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, Response, request
 import pymongo
+import json
 
 app = Flask(__name__)
 
@@ -7,15 +8,39 @@ app = Flask(__name__)
 try:
     mongo = pymongo.MongoClient(host="localhost", port=27017, serverSelectionTimeoutMS = 1000)
     # trigger exception if cannot connect to db, serverSelectionTimeoutMS-time to timout if error=true
+    db = mongo.company
     mongo.server_info()
 except:
-    print("ERROR-Cannot connect to db")
+    print("ERROR - Cannot connect to db")
 
 
 
 @app.route("/users", methods=["POST"])
 def create_user():
-    return "x"
+    try:
+        user = {
+            "name":request.form.get("lastName"), 
+            "lastName":"WW"
+        }
+        print("USERRR", user)
+        # db here points to mongo.company
+        dbResponse = db.users.insert_one(user) 
+        print("RESPONSEEEEE",dbResponse.inserted_id)
+        return Response(
+            response = json.dumps(
+                {"message":"user created", 
+                "id":f"{dbResponse.inserted_id}"
+                }
+            ),
+            status=200,
+            mimetype="application/json"
+        )
+        # for attr in dir(dbResponse):
+        #     print(attr)
+    except Exception as e:
+        print("******")
+        print("e")
+        print("******")
 
 #####################
 if __name__ == "__main__":
