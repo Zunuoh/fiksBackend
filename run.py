@@ -17,15 +17,21 @@ users = [{"id":1,"name":"Mary"}]
 
 nextEmployeeId = 4
 
-@app.route("/users", methods=["POST"])
-def create_user():
+@app.route("/users", methods=["GET"])
+def get_users():
     print("usersss", jsonify(users))
     return jsonify(users)
 
-@app.route("/users", methods=["POST"])
-def create_user():
-    print("usersss", jsonify(users))
-    return jsonify(users)
+@app.route("/users/<int:id>", methods=["GET"])
+def get_user_by_id(id: int):
+    user = get_user(id)
+    if user is None:
+        return jsonify({'error': 'User does not exist'})
+    return jsonify(user)
+
+def get_user(id):
+    return next((e for e in users if e['id'] == id), None)
+
         
 
 
