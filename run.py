@@ -77,6 +77,10 @@ def delete_user(id: int):
     users = [e for e in users if e['id'] != id]
     return jsonify(user), 200
 
+@app.route('/add', methods=['POST'])
+def add_cust():
+    
+
         
 
 
@@ -112,5 +116,5 @@ def delete_user(id: int):
 #         print("******")
 
 #####################
-if __name__ == "__main__":
+ if __name__ == "__main__":
     app.run(port=8000, debug=True)
